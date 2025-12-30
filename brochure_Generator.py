@@ -135,3 +135,26 @@ def create_brochure(company_name: str, url: str) -> str:
         ]
     )
     return response.choices[0].message.content
+
+import streamlit as st
+
+def stream_brochure_streamlit(company_name, url):
+    stream = ollama.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": brochure_system_prompt},
+            {"role": "user", "content": get_brochure_user_prompt(company_name, url)}
+        ],
+        stream=True
+    )
+
+    response = ""
+    placeholder = st.empty()
+
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content
+        if delta:
+            response += delta
+            placeholder.markdown(response)
+
+    return response
