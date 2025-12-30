@@ -1,5 +1,8 @@
 import streamlit as st
-from brochure_Generator import create_brochure
+from brochure_Generator import create_brochure, stream_brochure_streamlit
+
+
+
 
 # =========================
 # Streamlit UI
@@ -24,7 +27,8 @@ if st.button("Generate Brochure"):
 
     with st.spinner("Generating brochure... This may take a moment"):
         try:
-            brochure = create_brochure(company_name, url)
+            brochure = stream_brochure_streamlit(company_name, url)
+
         except Exception as e:
             st.error("Something went wrong while generating the brochure.")
             st.code(str(e))
@@ -36,3 +40,4 @@ if st.button("Generate Brochure"):
 
     # Display brochure
     st.markdown(brochure)
+
